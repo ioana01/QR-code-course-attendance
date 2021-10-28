@@ -20,19 +20,22 @@ class BootstrapNavbar extends React.Component{
                             <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
                                 <Navbar.Brand href="#home">QResent</Navbar.Brand>
                                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                                <Navbar.Collapse id="basic-navbar-nav">
-                                    <Nav className="mr-auto">
-                                    <Nav.Link href="/">Home</Nav.Link>
-                                    <Nav.Link href="/scanqr">Scan QR</Nav.Link>
-                                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                                    </NavDropdown>
-                                    </Nav>
-                                </Navbar.Collapse>
+                                    <Navbar.Collapse id="basic-navbar-nav">
+                                        <Nav className="mx-auto">
+                                        <Nav.Link href="/">Home</Nav.Link>
+                                        <Nav.Link href="/scanqr">Scan QR</Nav.Link>
+                                        <Nav.Link href="/login">Log Out</Nav.Link>
+                                        </Nav>
+                                        <Nav className = "justify-content-center">
+                                        <NavDropdown title="My menu" id="basic-nav-dropdown" menuVariant="dark">
+                                            <NavDropdown.Item href="profile">My Profile</NavDropdown.Item>
+                                            <NavDropdown.Item href="/">Home</NavDropdown.Item>
+                                            <NavDropdown.Item href="/scanqr">Scan QR</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item href="login">Log Out</NavDropdown.Item>
+                                        </NavDropdown>
+                                        </Nav>
+                                    </Navbar.Collapse>
                             </Navbar>
                             <br />
                             <Switch>
@@ -41,6 +44,9 @@ class BootstrapNavbar extends React.Component{
                                 </Route>
                                 <Route exact path="/scanqr">
                                     <ScanQR />
+                                </Route>
+                                <Route exact path="/login">
+                                    
                                 </Route>
                             </Switch>
                         </Router>
