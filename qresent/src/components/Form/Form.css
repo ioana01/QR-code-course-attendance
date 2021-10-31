@@ -1,0 +1,32 @@
+.buttons-section Button {
+    margin: 15px;
+    background-color: #343a40;
+    letter-spacing: normal;
+    text-align: center;
+    border-style: solid;
+}
+
+.container {
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.container .row {
+    padding: 1rem;
+}
+
+.form-group {
+    letter-spacing: normal;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+#descriptionSubject {
+    margin-top: 6rem;
+    background: radial-gradient(#e5e5e5, #ffff, #e5e5e5);
+}
+
+#form {
+    width: 100%;
+}
+  
