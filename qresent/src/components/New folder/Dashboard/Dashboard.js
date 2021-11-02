@@ -6,6 +6,7 @@ import Navbar from "../Navbar/Navbar"
 
 export default function Dashboard() {
     const [error, setError] = useState("")
+    // !!
     const { currentUser, logout } = useAuth()
     const history = useHistory()
 
