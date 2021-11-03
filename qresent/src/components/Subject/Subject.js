@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import "./Subject.css";
 import { database } from "../../firebase";
+import ScanQr from '../ScanQR/ScanQr';
+import { Link } from "react-router-dom";
 
 class Subject extends Component {
     constructor(props) {
@@ -65,6 +67,7 @@ class Subject extends Component {
             </Button>
           </div>
         </div>
+        <Link className="btn btn-outline-success" to={{pathname: `/scanqr`}}> Scan QR Code </Link>
       </div>
     );
   }

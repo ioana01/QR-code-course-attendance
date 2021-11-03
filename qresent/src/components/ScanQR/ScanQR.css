@@ -1,0 +1,63 @@
+#upload-container {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 30px;
+}
+
+.qrcode-photo {
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 20px;
+}
+
+.qrcode-scan {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#upload-button {
+    background-color: #212529;
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+#upload-button:hover {
+    background-color: #5c636a;
+    cursor: pointer;
+}
+
+.scan-result {
+    color: #198754; 
+}
+
+#result {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#result-scan {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.toggle-result {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    #upload-button {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 450px) {
+    #upload-button {
+        font-size: 7px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

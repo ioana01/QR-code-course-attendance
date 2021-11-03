@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
   } from "react-router-dom";
 import Card from '../Dashboard/Dashboard';
-import ScanQR from '../ScanQR';
+// import ScanQR from '../ScanQR';
 import { Navbar,Nav,NavDropdown,Form,FormControl,Button } from 'react-bootstrap';
+import { useAuth } from "../../contexts/AuthContexts";
+import { useHistory } from "react-router-dom"
 import './Navbar.css';
 
-class BootstrapNavbar extends React.Component{
+export default function BootstrapNavbar() {
+    const { logout } = useAuth();
+    const history = useHistory();
+    const [error, setError] = useState("")
 
-    render(){
+    async function handleLogout() {
+        setError("")
+
+        try {
+            await logout()
+            // history.push("/login")
+        } catch {
+            setError("Failed to log out")
+        }
+    }
+
+    // render(){
         return(
             <div>
                 <div className="row">
@@ -24,7 +40,7 @@ class BootstrapNavbar extends React.Component{
                                         <Nav className="ml-auto">
                                             <Nav.Link href="/">Dashboard</Nav.Link>
                                             <Nav.Link href="/profil">Profil</Nav.Link>
-                                            <Nav.Link href="/login">Log Out</Nav.Link>
+                                            <Nav.Link href="/login" onClick={handleLogout}>Log Out</Nav.Link>
                                         </Nav>
                                     </Navbar.Collapse>
                             </Navbar>
@@ -33,7 +49,7 @@ class BootstrapNavbar extends React.Component{
                 </div>
             </div>
         )  
-    }
+    // }
 }
 
-export default BootstrapNavbar;
+// export default BootstrapNavbar;

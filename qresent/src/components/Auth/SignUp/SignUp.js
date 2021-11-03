@@ -68,7 +68,6 @@ export default function SignUp() {
 
                         <Form.Group id="group">
                             <Form.Label>Group</Form.Label>
-                            {/* <Form.Control type="group" ref={nameRef} required /> */}
                             <Form.Select ref={groupRef} required>
                                 <option>Select option</option>
                                 <option>341C5</option>
