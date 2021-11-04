@@ -9,29 +9,33 @@ import Navbar from "./components/Navbar/Navbar";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Subject from "./components/Subject/Subject";
 import Form from "./components/Form/Form";
+import ScanQr from "./components/ScanQR/ScanQr";
 
 function App() {
   return (
     <>
-      <Navbar/>
-      <Container
-        className="d-flex align-items-center justify-content-center"
+      
+      <div
+        className="align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}
       >
+        {/* Container */}
         <div className="w-100">
           <Router>
             <AuthProvider>
+              <Navbar/>
               <Switch>
                 <PrivateRoute exact path="/" component={Dashboard}/>
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/subject/:id" component={Subject}/>
                 <PrivateRoute exact path="/form" component={Form}/>
+                <PrivateRoute exact path="/scanqr" component={ScanQr}/>
               </Switch>
             </AuthProvider>
           </Router>
         </div>
-      </Container>
+      </div>
     </>
   )
 }
