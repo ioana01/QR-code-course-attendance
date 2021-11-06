@@ -1,34 +1,41 @@
 import React, { Component } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import "./Subject.css";
 import { database, auth } from "../../firebase";
 import ScanQr from '../ScanQR/ScanQr';
+import GenerateQr from "../GenerateQR/GenerateQR";
+import Popup from "../Popup/Popup";
 import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { Link } from "react-router-dom";
 
 class Subject extends Component {
-    constructor(props) {
-      super(props);
+  constructor(props) {
+    super(props);
 
-      this.state = {
-        currentCourse: {},
-        email: ""
-      }
+    this.state = {
+      currentCourse: {},
+      email: "",
+      isOpen: false
     }
+  }
 
-    async componentDidMount() {
-      const refs = database.ref('materii');
-      const email = auth.currentUser.email;
+  togglePopupQr = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
 
-      await refs.on('value', snapshot => {
-          snapshot.forEach(childSnapshot => {
-              const childData = childSnapshot.val();
-              if(childData.name === this.props.match.params.id) {
-                this.setState({ currentCourse : childData, email: email });
-              }
-          });
+  async componentDidMount() {
+    const refs = database.ref('materii');
+    const email = auth.currentUser.email;
+
+    await refs.on('value', snapshot => {
+      snapshot.forEach(childSnapshot => {
+        const childData = childSnapshot.val();
+        if(childData.name === this.props.match.params.id) {
+          this.setState({ currentCourse : childData, email: email });
+        }
       });
-    }
+    });
+  }
 
   render() {
     return (
@@ -37,7 +44,7 @@ class Subject extends Component {
           <div className="row" id="descriptionSubject">
             <div className="col-md-8">
               <div className="row">
-                <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
+              <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
                 <div>
                   {this.state.currentCourse.general_info}
                 </div>
@@ -57,22 +64,25 @@ class Subject extends Component {
             </div>
           </div>
         </div>
-        <div class="container buttons-section">
-          <div class="row">
-            {(() => {  
+        <div className="container buttons-section">
+          <div className="row">
+            {(() => {
               if (CheckIfUserIsStudent(this.state.email)) {
                 return (
                   <Button className="col-md" variant="secondary">
                     <Link style={{textDecoration: "none", color: "#ffffff"}} to={{pathname: `/scanqr`}}>
                       Scan QR code
-                    </Link> 
-                  </Button>  
+                    </Link>
+                  </Button>
                 )
               } else {
                 return (
-                  <Button className="col-md" variant="secondary">
-                    Genereaza cod QR
-                  </Button> 
+                  <Button className="col-md" variant="secondary" onClick={this.togglePopupQr}>
+                    {this.state.isOpen && (
+                      <Popup  content={GenerateQr()} handleClose={this.togglePopupQr}/>
+                    )}
+                    Generate QR code
+                  </Button>
                 )
               }
             })()}
@@ -84,7 +94,7 @@ class Subject extends Component {
             </Button>
           </div>
         </div>
-        
+
       </div>
     );
   }
