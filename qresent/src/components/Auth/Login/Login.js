@@ -6,6 +6,8 @@ import './Login.css'
 
 export default function Login() {
     const emailRef = useRef();
+    console.log("in login");
+    console.log(emailRef);
     const passwordRef = useRef(); 
     const { login } = useAuth();
     const [error, setError] = useState("");

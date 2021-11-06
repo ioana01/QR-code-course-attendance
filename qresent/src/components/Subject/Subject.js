@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import "./Subject.css";
-import { database } from "../../firebase";
+import { database, auth } from "../../firebase";
 import ScanQr from '../ScanQR/ScanQr';
+import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { Link } from "react-router-dom";
 
 class Subject extends Component {
@@ -10,18 +11,20 @@ class Subject extends Component {
       super(props);
 
       this.state = {
-        currentCourse: {}
+        currentCourse: {},
+        email: ""
       }
     }
 
     async componentDidMount() {
       const refs = database.ref('materii');
+      const email = auth.currentUser.email;
 
       await refs.on('value', snapshot => {
           snapshot.forEach(childSnapshot => {
               const childData = childSnapshot.val();
               if(childData.name === this.props.match.params.id) {
-                this.setState({ currentCourse : childData });
+                this.setState({ currentCourse : childData, email: email });
               }
           });
       });
@@ -56,9 +59,23 @@ class Subject extends Component {
         </div>
         <div class="container buttons-section">
           <div class="row">
-            <Button className="col-md" variant="secondary">
-              Genereaza cod QR
-            </Button>
+            {(() => {  
+              if (CheckIfUserIsStudent(this.state.email)) {
+                return (
+                  <Button className="col-md" variant="secondary">
+                    <Link style={{textDecoration: "none", color: "#ffffff"}} to={{pathname: `/scanqr`}}>
+                      Scan QR code
+                    </Link> 
+                  </Button>  
+                )
+              } else {
+                return (
+                  <Button className="col-md" variant="secondary">
+                    Genereaza cod QR
+                  </Button> 
+                )
+              }
+            })()}
             <Button className="col-md" variant="secondary">
               Statistici prezenta
             </Button>
@@ -67,7 +84,7 @@ class Subject extends Component {
             </Button>
           </div>
         </div>
-        <Link className="btn btn-outline-success" to={{pathname: `/scanqr`}}> Scan QR Code </Link>
+        
       </div>
     );
   }

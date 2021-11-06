@@ -12,6 +12,7 @@ import Form from "./components/Form/Form";
 import ScanQr from "./components/ScanQR/ScanQr";
 
 function App() {
+
   return (
     <>
       

@@ -5,6 +5,7 @@ import './Card.css';
 
 const Card = props => {
   const backUrl = props.course.name;
+  //console.log(props);
 
   return(
     <div className="card text-center shadow">
