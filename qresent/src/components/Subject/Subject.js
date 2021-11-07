@@ -35,6 +35,15 @@ class Subject extends Component {
         }
       });
     });
+
+    this.interval = setInterval(
+      () => this.setState({ time: Date.now() }),
+      30000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -79,7 +88,7 @@ class Subject extends Component {
                 return (
                   <Button className="col-md" variant="secondary" onClick={this.togglePopupQr}>
                     {this.state.isOpen && (
-                      <Popup  content={GenerateQr()} handleClose={this.togglePopupQr}/>
+                      <Popup content={GenerateQr()} handleClose={this.togglePopupQr}/>
                     )}
                     Generate QR code
                   </Button>
