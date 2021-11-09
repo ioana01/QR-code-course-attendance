@@ -1,7 +1,8 @@
 import React, { Component} from 'react';
 import Card from '../Card/Card';
 import img1 from './react-logo.png';
-import { database } from "../../firebase";
+import { CheckIfUserIsStudent } from '../../utils/utils.js';
+import { database, auth } from "../../firebase";
 
 class Dashboard extends Component{
     constructor(props) {
@@ -10,16 +11,7 @@ class Dashboard extends Component{
             courses: []
         }
     }
-
     addToDB() {
-        const mate = {
-            name: 'Matematica 2',
-            professor: 'Adriana Balan',
-            general_info: '...',
-            scores: 'curs, lab, teme',
-            schedule: '...'
-        }
-        // database.ref('materii').push(mate);
 
         const student = {
             group: '344C5',
@@ -27,30 +19,75 @@ class Dashboard extends Component{
             email: 'patricia.pirlog@stud.acs.upb.ro',
             courses: ['MPS', 'ISI', 'EP', 'UBD']
         }
-        // database.ref('students').push(student);
 
-        const professor = {
-            name: 'Alexandru Boicea',
-            email: 'alexandru.boicea@cs.pub.ro',
-            courses: ['BD1', 'CAD/CASE']
-        }
-        database.ref('professors').push(professor); 
+        //database.ref('students').push(student);
+
+        // const professor = {
+        //     name: 'Alexandru Boicea',
+        //     email: 'alexandru.boicea@cs.pub.ro',
+        //     courses: ['BD1', 'CAD/CASE']
+        // }
+        //database.ref('professors').push(professor); 
     }
 
     async componentDidMount() {
         let coursesList = [];
-        const refs = database.ref('materii');
+        const subjectsRefs = database.ref('materii');
+        const userSubjects = database.ref();
+        const email = auth.currentUser.email;
 
-        await refs.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const childData = childSnapshot.val();
-                console.log(childData);
-                coursesList.push(childData);
+        if(CheckIfUserIsStudent(email)) {
+        //if(email.endsWith("@stud.acs.upb.ro")) {
+            let studentCoursesList = [];
+            const studentRefs = database.ref('students');
+
+            await studentRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                   // console.log(childData);
+                    if(childData.mail === email) {
+                        console.log("aici");
+                        studentCoursesList.push.apply(studentCoursesList, childData.courses);
+                    }
+                });
+               // console.log(studentCoursesList);
             });
-            this.setState({ courses : coursesList });
-        });
+            await subjectsRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    const nume = childData.name;
+                    if(studentCoursesList.includes(nume)) {
+                        coursesList.push(childData);
+                    }
+                    
+                });
+                this.setState({ courses : coursesList });
+            });
+        } else {
+            console.log("nu e student, ci profffff");
+            let profCoursesList = [];
+            const profRefs = database.ref('professors');
 
-        console.log(this.state.courses);
+            await profRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    if(childData.email === email) {
+                        profCoursesList.push.apply(profCoursesList, childData.courses);  
+                    }
+                    console.log(profCoursesList);
+                });
+            });
+            await subjectsRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    const nume = childData.name;
+                    if(profCoursesList.includes(nume)) {
+                        coursesList.push(childData);
+                    } 
+                });
+                this.setState({ courses : coursesList });
+            });
+        }
     }
 
     render(){

@@ -10,8 +10,10 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Subject from "./components/Subject/Subject";
 import Form from "./components/Form/Form";
 import ScanQr from "./components/ScanQR/ScanQr";
+import Profile from "./components/Profile/Profile"
 
 function App() {
+
   return (
     <>
       
@@ -31,6 +33,7 @@ function App() {
                 <PrivateRoute exact path="/subject/:id" component={Subject}/>
                 <PrivateRoute exact path="/form" component={Form}/>
                 <PrivateRoute exact path="/scanqr" component={ScanQr}/>
+                <PrivateRoute exact path="/profil" component={Profile}/>
               </Switch>
             </AuthProvider>
           </Router>

@@ -1,9 +1,11 @@
-.buttons-section Button {
+.buttons-section Button,
+.buttons-section Link {
     margin: 15px;
     background-color: #343a40;
     letter-spacing: normal;
     text-align: center;
     border-style: solid;
+    text-decoration: none;
 }
 
 .container {
