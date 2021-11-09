@@ -45,7 +45,7 @@ class Dashboard extends Component{
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                    // console.log(childData);
-                    if(childData.mail === email) {
+                    if(childData.email === email) {
                         console.log("aici");
                         studentCoursesList.push.apply(studentCoursesList, childData.courses);
                     }

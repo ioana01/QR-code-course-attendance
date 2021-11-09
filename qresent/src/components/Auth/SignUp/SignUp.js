@@ -22,7 +22,7 @@ export default function SignUp() {
 
         const userData = {
             name: nameRef.current.value,
-            mail: emailRef.current.value,
+            email: emailRef.current.value,
             group: groupRef.current.value,
             moodle_account: userRef.current.value
         }

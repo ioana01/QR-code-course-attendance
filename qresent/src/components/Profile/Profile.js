@@ -23,12 +23,12 @@ class Profile extends Component {
             .then(snapshot => {
                 snapshot.forEach((child) => {
                     let dict = child.val()
-                    if (dict["mail"] == auth.currentUser.email){
+                    if (dict["email"] == auth.currentUser.email){
                         this.setState({currentUser : child.val()})
                     }
                 });
                 console.log("data")
-                console.log(this.state.currentUser["mail"])
+                console.log(this.state.currentUser["email"])
             });
         }
         else {
@@ -38,12 +38,12 @@ class Profile extends Component {
             .then(snapshot => {
                 snapshot.forEach((child) => {
                     let dict = child.val()
-                    if (dict["mail"] == auth.currentUser.email){
+                    if (dict["email"] == auth.currentUser.email){
                         this.setState({currentUser : child.val()})
                     }
                 });
                 console.log("data")
-                console.log(this.state.currentUser["mail"])
+                console.log(this.state.currentUser["email"])
             });
         }
     }

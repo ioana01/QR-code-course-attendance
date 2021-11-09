@@ -38,7 +38,7 @@ class Subject extends Component {
 
     this.interval = setInterval(
       () => this.setState({ time: Date.now() }),
-      30000
+      5000
     );
   }
 

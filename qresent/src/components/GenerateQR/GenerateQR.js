@@ -14,6 +14,9 @@ function random() {
   return str;
 }
 
+// id=materie
+// expire=data
+
 export default function GenerateQr() {
   const props = { value: "http://todo.com/?expire=", size: 300, level: "H" };
 
