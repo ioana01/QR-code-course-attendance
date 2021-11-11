@@ -15,12 +15,14 @@ class Subject extends Component {
     this.state = {
       currentCourse: {},
       email: "",
-      isOpen: false
+      isOpen: false,
+      time: ""
     }
   }
 
   togglePopupQr = () => {
     this.setState({ isOpen: !this.state.isOpen });
+    this.setState({ time: Math.floor(new Date().getTime() / 1000) });
   }
 
   async componentDidMount() {
@@ -30,6 +32,7 @@ class Subject extends Component {
     await refs.on('value', snapshot => {
       snapshot.forEach(childSnapshot => {
         const childData = childSnapshot.val();
+        console.log(childSnapshot.key);
         if(childData.name === this.props.match.params.id) {
           this.setState({ currentCourse : childData, email: email });
         }
@@ -46,6 +49,10 @@ class Subject extends Component {
     clearInterval(this.interval);
   }
 
+  updateInfo() {
+    database.ref('materii').child('-MnQPdcSCdce2rc9jtoj').update({'name': 'APD....'})
+  }
+
   render() {
     return (
       <div className="container">
@@ -53,7 +60,7 @@ class Subject extends Component {
           <div className="row" id="descriptionSubject">
             <div className="col-md-8">
               <div className="row">
-              <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
+                <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
                 <div>
                   {this.state.currentCourse.general_info}
                 </div>
@@ -75,35 +82,35 @@ class Subject extends Component {
         </div>
         <div className="container buttons-section">
           <div className="row">
-            {(() => {
-              if (CheckIfUserIsStudent(this.state.email)) {
-                return (
-                  <Button className="col-md" variant="secondary">
-                    <Link style={{textDecoration: "none", color: "#ffffff"}} to={{pathname: `/scanqr`}}>
-                      Scan QR code
-                    </Link>
-                  </Button>
-                )
-              } else {
-                return (
-                  <Button className="col-md" variant="secondary" onClick={this.togglePopupQr}>
-                    {this.state.isOpen && (
-                      <Popup content={GenerateQr()} handleClose={this.togglePopupQr}/>
-                    )}
-                    Generate QR code
-                  </Button>
-                )
-              }
-            })()}
+            {CheckIfUserIsStudent(this.state.email) ?
+              <Button className="col-md" variant="secondary">
+                <Link style={{textDecoration: "none", color: "#ffffff"}} to={{pathname: `/scanqr`}}>
+                  Scan QR code
+                </Link>
+              </Button>
+              // <Link className="col-md" to={{pathname: `/scanqr`}}> Scan QR Code </Link>
+              :
+              <Button className="col-md" variant="secondary" onClick={this.togglePopupQr}>
+                {this.state.isOpen && (
+                  <Popup 
+                    handleClose={this.togglePopupQr} 
+                    time={this.state.time} 
+                    course={this.state.currentCourse.name}/>
+                )}
+                Generate QR code
+              </Button>
+            }
             <Button className="col-md" variant="secondary">
               Statistici prezenta
             </Button>
-            <Button className="col-md" variant="secondary">
-              Exporta lista
-            </Button>
+            {
+              !CheckIfUserIsStudent(this.state.email) &&
+              <Button className="col-md" variant="secondary">
+                Exporta lista
+              </Button>
+            }
           </div>
         </div>
-
       </div>
     );
   }

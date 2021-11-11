@@ -1,40 +1,63 @@
-import React, {useState, useRef} from 'react';
-import {Container, Card, makeStyles, TextField, Button} from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+import { Container, Card, makeStyles, TextField, Button } from 'react-bootstrap';
 import QRCode from 'qrcode';
 import QrReader from 'react-qr-reader';
-import {store, useGlobalState} from 'state-pool';
-import './ScanQR.css'
-import { database } from '../../firebase'
+import { store, useGlobalState } from 'state-pool';
+import './ScanQR.css';
+import { auth, database } from '../../firebase';
 
 store.setState("count", 0);
 
 export default function ScanQr() {
     const [text, setText] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [file_upload_message, setFileMessage] = useState('');
+    const [web_cam_message, setWebCamMessage] = useState('');
     const [scanResultFile, setScanResultFile] = useState('');
     const [scanResultWebCam, setScanResultWebCam] =  useState('');
     const qrRef = useRef(null);
     const [count, setCount] = useGlobalState("count");
 
     const handleErrorFile = (error) => {
-        setScanResultFile(error);
+        setFileMessage(error);
+    }
+
+    const checkTime = (time) => {
+        const utcSeconds = time.length === 13 ? Math.floor(parseInt(time) / 1000) : parseInt(time);
+        const currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+
+        if(utcSeconds + 120 < currentTimeSeconds) {
+            return false;
+        }
+
+        return true;
     }
 
     const handleScanFile = (result) => {
-        console.log(count);
         if (result && !count) {
-            setScanResultFile('Successfuly added to the attendance list');
-            document.getElementById('result').classList.toggle('toggle-result');
-            setCount(count+1);
-            
-            const user = {
-                moodle_account: '',
-                time: new Date()
+            setScanResultFile(result);
+            const urlSearchParams = new URLSearchParams(result);
+            const params = Object.fromEntries(urlSearchParams.entries());
+
+            if(!checkTime(params[Object.keys(params)[0]])) {
+                setFileMessage('Codul QR a expirat');
+                document.getElementById('result-upload').classList.remove('toggle-result');
+            } else {
+                setFileMessage(`Adaugat pe prezenta la materia ${params[Object.keys(params)[1]].split('$')[0]}`);
+                document.getElementById('result-upload').classList.remove('toggle-result');
+                setCount(count+1);
+                
+                const user = {
+                    moodle_account: auth.currentUser.email.split('@')[0],
+                    time: (new Date()).toString(),
+                    course: params[Object.keys(params)[1]].split('$')[0]
+                }
+                database.ref('attendance').push(user);
             }
-            database.ref('attendance').push(user);
+            
         } else if(result && count) {
-            setScanResultFile('Already on the attendance list');
-            document.getElementById('result').classList.toggle('toggle-result');
+            setFileMessage('Deja trecut pe lista de prezenta');
+            document.getElementById('result-upload').classList.remove('toggle-result');
         }
     }
 
@@ -48,18 +71,28 @@ export default function ScanQr() {
 
     const handleScanWebCam = (result) => {
         if (result && !count){
-            setScanResultWebCam('Successfuly added to the attendance list');
-            document.getElementById('result-scan').classList.toggle('toggle-result');
-            setCount(count+1);
-            
-            const user = {
-                moodle_account: '',
-                time: new Date()
+            setScanResultWebCam(result);
+            const urlSearchParams = new URLSearchParams(result);
+            const params = Object.fromEntries(urlSearchParams.entries());
+
+            if(!checkTime(params[Object.keys(params)[0]])) {
+                setWebCamMessage('Codul QR a expirat');
+                document.getElementById('result-scan').classList.remove('toggle-result');
+            } else {
+                setWebCamMessage(`Adaugat pe prezenta la materia ${params[Object.keys(params)[1]].split('$')[0]}`);
+                document.getElementById('result-scan').classList.remove('toggle-result');
+                setCount(count+1);
+                
+                const user = {
+                    moodle_account: auth.currentUser.email.split('@')[0],
+                    time: (new Date()).toString(),
+                    course: params[Object.keys(params)[1]].split('$')[0]
+                }
+                database.ref('attendance').push(user);
             }
-            database.ref('attendance').push(user); 
         } else if(result && count == 1) {
-            setScanResultWebCam('Already on the attendance list');
-            document.getElementById('result-scan').classList.toggle('toggle-result');
+            setWebCamMessage('Deja trecut pe lista de prezenta');
+            document.getElementById('result-scan').classList.remove('toggle-result');
         }
     }
 
@@ -79,7 +112,7 @@ export default function ScanQr() {
                                 legacyMode
                             />
                             <Button id='upload-button' variant="secondary"  onClick={onScanFile}>Upload a QR code</Button>
-                            <h3 id='result' class='toggle-result'>Result: <span class='scan-result'>{scanResultFile}</span></h3>
+                            <h3 id='result-upload' class='toggle-result'>Result: <span class='scan-result'>{file_upload_message}</span></h3>
                         </div>
                     </div>
                 </div>
@@ -94,7 +127,7 @@ export default function ScanQr() {
                                 onError={handleErrorWebCam}
                                 onScan={handleScanWebCam}
                             />
-                            <h3 id='result-scan' class='toggle-result'>Result: <span class='scan-result'>{scanResultWebCam}</span></h3>
+                            <h3 id='result-scan' class='toggle-result'>Result: <span class='scan-result'>{web_cam_message}</span></h3>
                         </div>
                     </div>
                 </div>

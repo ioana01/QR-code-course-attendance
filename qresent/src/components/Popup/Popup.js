@@ -1,5 +1,6 @@
 import React from "react";
 import "./Popup.css";
+import GenerateQr from "../GenerateQR/GenerateQR";
 
 const Popup = (props) => {
   return (
@@ -8,7 +9,7 @@ const Popup = (props) => {
         <span className="close-icon" onClick={props.handleClose}>
           x
         </span>
-        {props.content}
+        <GenerateQr time={props.time} course={props.course}/>
       </div>
     </div>
   );
