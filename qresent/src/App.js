@@ -11,6 +11,7 @@ import Subject from "./components/Subject/Subject";
 import Form from "./components/Form/Form";
 import ScanQr from "./components/ScanQR/ScanQr";
 import Profile from "./components/Profile/Profile"
+import AdminDashboard from "./components/Dashboard/AdminDashboard";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
               <Navbar/>
               <Switch>
                 <PrivateRoute exact path="/" component={Dashboard}/>
+                <PrivateRoute exact path="/admin" component={AdminDashboard}/>
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/subject/:id" component={Subject}/>
