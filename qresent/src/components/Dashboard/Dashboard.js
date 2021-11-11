@@ -3,6 +3,7 @@ import Card from '../Card/Card';
 import img1 from './react-logo.png';
 import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { database, auth } from "../../firebase";
+import './Dashboard.css'
 
 class Dashboard extends Component{
     constructor(props) {
@@ -11,6 +12,7 @@ class Dashboard extends Component{
             courses: []
         }
     }
+    
     addToDB() {
 
         const student = {
@@ -94,18 +96,17 @@ class Dashboard extends Component{
         return(
             (
                 this.state.courses.length &&
-            <div>
-                {/* <button onClick={this.addToDB}>Apasa-ma!</button> */}
-                <div className="container-fluid d-flex justify-content-center">
-                    <div className="row">
-                        {this.state.courses.map(course => (
-                            <div className="col-md-4">
-                                <Card imgsrc={img1} course={course}/>
-                            </div>
-                        ))}
+                <div>
+                    <div className="container-fluid d-flex justify-content-center">
+                        <div className="row" id="courses">
+                            {this.state.courses.map(course => (
+                                <div className="col-md-4">
+                                    <Card imgsrc={img1} course={course}/>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
             )
         );
     }
