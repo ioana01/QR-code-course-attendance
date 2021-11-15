@@ -12,6 +12,7 @@ import Form from "./components/Form/Form";
 import ScanQr from "./components/ScanQR/ScanQr";
 import Profile from "./components/Profile/Profile"
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import UpdateUser from "./components/Dashboard/UpdateUser";
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
       
       <div
         className="align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}
+        // style={{ minHeight: "100vh" }}
       >
         {/* Container */}
         <div className="w-100">
@@ -30,6 +31,7 @@ function App() {
               <Switch>
                 <PrivateRoute exact path="/" component={Dashboard}/>
                 <PrivateRoute exact path="/admin" component={AdminDashboard}/>
+                <PrivateRoute exact path="/admin/:user" component={UpdateUser}/>
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/subject/:id" component={Subject}/>

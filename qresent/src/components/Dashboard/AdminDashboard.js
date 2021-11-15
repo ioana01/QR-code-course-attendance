@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import Table from './Table.js';
 import { database, auth } from "../../firebase";
+
 class AdminDashboard extends Component{
     constructor(props) {
         super(props);
@@ -15,7 +16,6 @@ class AdminDashboard extends Component{
         await studentRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 const childData = childSnapshot.val();
-                //console.log(childData.name);
                 studentNameList.push(childData);
             });
             this.setState({ studentList : studentNameList});
@@ -26,10 +26,10 @@ class AdminDashboard extends Component{
 
     render(){
         return(    this.state.studentList.length &&
-            <div>
-                    <table class="table">
-                    <thead>
-                        <th scope="col">#</th>
+            <div className="container mt-5">
+                    <table className="table" > 
+                    <thead style={{backgroundColor: "rgba(33, 37, 41)", color: "white"}}>
+                        <th></th>
                         <th scope="col">Nume</th>
                         <th scope="col">Email</th>
                         <th scope="col">Cursuri</th>
@@ -38,7 +38,6 @@ class AdminDashboard extends Component{
                     </thead>
                     <tbody>
                         {this.state.studentList.map(student => (
-
                                 <Table student={student}/>
                         ))}
                     </tbody>
