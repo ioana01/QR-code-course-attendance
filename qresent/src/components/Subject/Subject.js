@@ -7,6 +7,9 @@ import GenerateQr from "../GenerateQR/GenerateQR";
 import Popup from "../Popup/Popup";
 import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { Link } from "react-router-dom";
+import AttendancePDF from "../AttendancePDF/AttendancePDF.js";
+import { PDFDownloadLink, usePDF } from '@react-pdf/renderer';
+
 
 class Subject extends Component {
   constructor(props) {
@@ -16,7 +19,8 @@ class Subject extends Component {
       currentCourse: {},
       email: "",
       isOpen: false,
-      time: ""
+      time: "",
+      attendance: []
     }
   }
 
@@ -43,6 +47,8 @@ class Subject extends Component {
       () => this.setState({ time: Date.now() }),
       5000
     );
+
+    this.exportAttendance();
   }
 
   componentWillUnmount() {
@@ -52,6 +58,26 @@ class Subject extends Component {
   updateInfo() {
     database.ref('materii').child('-MnQPdcSCdce2rc9jtoj').update({'name': 'APD....'})
   }
+
+
+  exportAttendance(){
+    this.setState({attendance : []})
+    database
+        .ref('attendance/')
+        .once('value')
+        .then(snapshot => {
+            snapshot.forEach((child) => {
+                let dict = child.val()
+                if (dict["course"] == this.state.currentCourse.name){
+                  this.setState({attendance: this.state.attendance.concat(dict)})
+                }
+            });
+            console.log("data");
+            console.log(this.state.attendance)
+        });
+    return this.state.attendance;
+  }
+
 
   render() {
     return (
@@ -106,7 +132,11 @@ class Subject extends Component {
             {
               !CheckIfUserIsStudent(this.state.email) &&
               <Button className="col-md" variant="secondary">
-                Exporta lista
+                  <PDFDownloadLink document={<AttendancePDF data={this.state.attendance}/>} fileName="Prezenta.pdf">
+                  {({ blob, url, loading, error }) =>
+                    loading ? 'Loading document...' : 'Exporta Lista'
+                  }
+                  </PDFDownloadLink>
               </Button>
             }
           </div>
