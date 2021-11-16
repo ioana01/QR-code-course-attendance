@@ -9,7 +9,7 @@ import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { Link } from "react-router-dom";
 import AttendancePDF from "../AttendancePDF/AttendancePDF.js";
 import { PDFDownloadLink, usePDF } from '@react-pdf/renderer';
-
+import EditProfile from "./EditProfile";
 
 const GENERATE_QR_OPTION = "GenerateQR";
 const STATISTICS_OPTION = "Statistics";
@@ -40,8 +40,9 @@ class Subject extends Component {
     await refs.on('value', snapshot => {
       snapshot.forEach(childSnapshot => {
         const childData = childSnapshot.val();
-        console.log(childSnapshot.key);
+        //console.log(childSnapshot.key);
         if(childData.name === this.props.match.params.id) {
+          
           this.setState({ currentCourse : childData, email: email });
         }
       });
@@ -93,6 +94,9 @@ class Subject extends Component {
                 <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
                 <div>
                   {this.state.currentCourse.general_info}
+                  {!CheckIfUserIsStudent(this.state.email) &&<EditProfile></EditProfile>
+                  }
+                  
                 </div>
               </div>
               <div className="row">

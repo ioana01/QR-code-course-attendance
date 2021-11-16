@@ -13,6 +13,7 @@ import ScanQr from "./components/ScanQR/ScanQr";
 import Profile from "./components/Profile/Profile"
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import UpdateUser from "./components/Dashboard/UpdateUser";
+import EditProfile from "./components/Subject/EditProfile";
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
                 <PrivateRoute exact path="/form" component={Form}/>
                 <PrivateRoute exact path="/scanqr" component={ScanQr}/>
                 <PrivateRoute exact path="/profil" component={Profile}/>
+                <PrivateRoute exact path="/edit" component={EditProfile}/>
               </Switch>
             </AuthProvider>
           </Router>
