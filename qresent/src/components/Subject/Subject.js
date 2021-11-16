@@ -11,6 +11,8 @@ import AttendancePDF from "../AttendancePDF/AttendancePDF.js";
 import { PDFDownloadLink, usePDF } from '@react-pdf/renderer';
 
 
+const GENERATE_QR_OPTION = "GenerateQR";
+const STATISTICS_OPTION = "Statistics";
 class Subject extends Component {
   constructor(props) {
     super(props);
@@ -20,13 +22,15 @@ class Subject extends Component {
       email: "",
       isOpen: false,
       time: "",
+      optionChosen: "",
       attendance: []
     }
   }
 
-  togglePopupQr = () => {
+  togglePopupQr = (e, option) => {
     this.setState({ isOpen: !this.state.isOpen });
     this.setState({ time: Math.floor(new Date().getTime() / 1000) });
+    this.setState({ optionChosen: option });
   }
 
   async componentDidMount() {
@@ -45,7 +49,7 @@ class Subject extends Component {
 
     this.interval = setInterval(
       () => this.setState({ time: Date.now() }),
-      5000
+      120000
     );
 
     this.exportAttendance();
@@ -116,17 +120,25 @@ class Subject extends Component {
               </Button>
               // <Link className="col-md" to={{pathname: `/scanqr`}}> Scan QR Code </Link>
               :
-              <Button className="col-md" variant="secondary" onClick={this.togglePopupQr}>
-                {this.state.isOpen && (
+              <Button className="col-md" variant="secondary" onClick={(e) => this.togglePopupQr(e, GENERATE_QR_OPTION)}>
+                { this.state.optionChosen == GENERATE_QR_OPTION && this.state.isOpen && (
                   <Popup 
                     handleClose={this.togglePopupQr} 
                     time={this.state.time} 
-                    course={this.state.currentCourse.name}/>
+                    course={this.state.currentCourse.name}
+                    button={GENERATE_QR_OPTION}/>
                 )}
                 Generate QR code
               </Button>
             }
-            <Button className="col-md" variant="secondary">
+            <Button className="col-md" variant="secondary" onClick={(e) => this.togglePopupQr(e, STATISTICS_OPTION)}>
+                { this.state.optionChosen == STATISTICS_OPTION && this.state.isOpen && (
+                  <Popup 
+                    handleClose={this.togglePopupQr}
+                    time={this.state.time} 
+                    course={this.state.currentCourse.name} 
+                    button={STATISTICS_OPTION}/>
+                )}
               Statistici prezenta
             </Button>
             {
