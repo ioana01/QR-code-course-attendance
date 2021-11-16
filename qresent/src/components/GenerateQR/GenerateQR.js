@@ -14,15 +14,12 @@ function random() {
   return str;
 }
 
-// id=materie
-// expire=data
-
 export default function GenerateQr(props) {
   const course_query_param = props.course + '$';
   const qr_props = { value: `http://todo.com/?expire=${props.time}&id=${course_query_param}`, size: 300, level: "H" };
 
   return (
-    <div className="qrcontainer">
+    <div className="qrcontainer d-flex justify-content-center">
       <QRCode
         size={qr_props.size}
         value={qr_props.value + random()}
