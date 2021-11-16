@@ -39,20 +39,17 @@ class Dashboard extends Component{
         const email = auth.currentUser.email;
 
         if(CheckIfUserIsStudent(email)) {
-        //if(email.endsWith("@stud.acs.upb.ro")) {
             let studentCoursesList = [];
             const studentRefs = database.ref('students');
 
             await studentRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
-                   // console.log(childData);
                     if(childData.email === email) {
                         console.log("aici");
                         studentCoursesList.push.apply(studentCoursesList, childData.courses);
                     }
                 });
-               // console.log(studentCoursesList);
             });
             await subjectsRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
@@ -66,7 +63,6 @@ class Dashboard extends Component{
                 this.setState({ courses : coursesList });
             });
         } else {
-            console.log("nu e student, ci profffff");
             let profCoursesList = [];
             const profRefs = database.ref('professors');
 

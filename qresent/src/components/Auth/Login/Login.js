@@ -3,7 +3,7 @@ import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContexts";
 import { Link, useHistory } from "react-router-dom";
 import './Login.css'
-
+import { CheckIfUserIsAdmin, CheckIfUserIsStudent } from '../../../utils/utils.js';
 export default function Login() {
     const emailRef = useRef();
     console.log("in login");
@@ -13,7 +13,7 @@ export default function Login() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useHistory();
-
+   
     async function handleSubmit(e) {
         e.preventDefault()
     
@@ -21,7 +21,11 @@ export default function Login() {
           setError("")
           setLoading(true)
           await login(emailRef.current.value, passwordRef.current.value)
-          history.push("/")
+          if(CheckIfUserIsAdmin(emailRef.current.value)){
+            history.push("/admin")
+          }
+          else 
+            history.push("/")
         } catch(error) {
           setError(error.message);
         }
@@ -29,6 +33,7 @@ export default function Login() {
         setLoading(false)
     }
 
+    
     return (
         <>
             <Card id='card-container-login'>
