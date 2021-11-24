@@ -43,6 +43,8 @@ class Subject extends Component {
         console.log(childSnapshot.key);
         if(childData.name === this.props.match.params.id) {
           this.setState({ currentCourse : childData, email: email });
+          console.log(this.state.currentCourse.scores["10%"]);
+          console.log(this.state.currentCourse.schedule);
         }
       });
     });
@@ -79,11 +81,19 @@ class Subject extends Component {
             console.log("data");
             console.log(this.state.attendance)
         });
+
     return this.state.attendance;
   }
 
 
   render() {
+    console.log(this.state.currentCourse.scores);
+    let keys;
+    if(this.state.currentCourse.scores) {
+      keys = Object.keys(this.state.currentCourse.scores);
+      console.log(keys);  
+    }
+    
     return (
       <div className="container">
         <div className="container d-flex justify-content-center">
@@ -98,15 +108,36 @@ class Subject extends Component {
               <div className="row">
                 <h3>Evaluare pe parcurs</h3>
                 <div>
-                  {this.state.currentCourse.scores}
+                  {
+                    keys && 
+                    keys.map(key => {
+                      return <li>{key}: {this.state.currentCourse.scores[key]}</li>
+                    })
+                  }
                 </div>
               </div>
             </div>
             <div className="col-md-4">
-              <h3>Orar</h3>
-              <div>
-                {this.state.currentCourse.schedule}
-              </div>
+              <h3>Orar</h3> 
+              <table>
+                <tr>
+                  <th>Zi</th>
+                  <th>Interval</th>
+                  <th>Asistent</th>
+                  <th>Sala</th>
+                </tr>
+                {
+                  this.state.currentCourse.schedule &&
+                  this.state.currentCourse.schedule.map((element) => {
+                    return <tr>
+                        <td>{element["zi"]}</td>
+                        <td>{element["interval"]}</td>
+                        <td>{element["asistent"]}</td>
+                        <td>{element["sala"]}</td>
+                      </tr>
+                  })
+                }
+              </table>
             </div>
           </div>
         </div>
