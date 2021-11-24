@@ -12,25 +12,6 @@ class Dashboard extends Component{
             courses: []
         }
     }
-    
-    addToDB() {
-
-        const student = {
-            group: '344C5',
-            name: 'Pirlog Patricia',
-            email: 'patricia.pirlog@stud.acs.upb.ro',
-            courses: ['MPS', 'ISI', 'EP', 'UBD']
-        }
-
-        //database.ref('students').push(student);
-
-        // const professor = {
-        //     name: 'Alexandru Boicea',
-        //     email: 'alexandru.boicea@cs.pub.ro',
-        //     courses: ['BD1', 'CAD/CASE']
-        // }
-        //database.ref('professors').push(professor); 
-    }
 
     async componentDidMount() {
         let coursesList = [];
@@ -45,21 +26,24 @@ class Dashboard extends Component{
             await studentRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
+
                     if(childData.email === email) {
-                        console.log("aici");
                         studentCoursesList.push.apply(studentCoursesList, childData.courses);
                     }
                 });
             });
+
             await subjectsRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                     const nume = childData.name;
+
                     if(studentCoursesList.includes(nume)) {
                         coursesList.push(childData);
                     }
                     
                 });
+
                 this.setState({ courses : coursesList });
             });
         } else {
@@ -69,20 +53,22 @@ class Dashboard extends Component{
             await profRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
+
                     if(childData.email === email) {
                         profCoursesList.push.apply(profCoursesList, childData.courses);  
                     }
-                    console.log(profCoursesList);
                 });
             });
             await subjectsRefs.on('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
                     const childData = childSnapshot.val();
                     const nume = childData.name;
+
                     if(profCoursesList.includes(nume)) {
                         coursesList.push(childData);
                     } 
                 });
+
                 this.setState({ courses : coursesList });
             });
         }
@@ -95,11 +81,13 @@ class Dashboard extends Component{
                 <div>
                     <div className="container-fluid d-flex justify-content-center">
                         <div className="row" id="courses">
-                            {this.state.courses.map(course => (
-                                <div className="col-md-4">
-                                    <Card imgsrc={img1} course={course}/>
-                                </div>
-                            ))}
+                            {
+                                this.state.courses.map(course => (
+                                    <div className="col-md-4">
+                                        <Card imgsrc={img1} course={course}/>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

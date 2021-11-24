@@ -5,10 +5,9 @@ import PieChart from "../Charts/PieChart/PieChart";
 
 function renderOption(props) {
   if (props.button === "GenerateQR" ) {
-    console.log(props.button);
     return <GenerateQr time={props.time} course={props.course}/>;
   } else if (props.button === "Statistics") {
-    return <PieChart time={props.time} course={props.course}> </PieChart>
+    return <PieChart time={props.time} course={props.course}> </PieChart>;
   }
 }
 
@@ -20,7 +19,7 @@ const Popup = (props) => {
           x
         </span>
           { renderOption(props) }
-        </div>
+      </div>
     </div>
   );
 };

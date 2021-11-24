@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import "./Subject.css";
 import { database, auth } from "../../firebase";
-import ScanQr from '../ScanQR/ScanQr';
-import GenerateQr from "../GenerateQR/GenerateQR";
 import Popup from "../Popup/Popup";
 import { CheckIfUserIsStudent } from '../../utils/utils.js';
 import { Link } from "react-router-dom";
 import AttendancePDF from "../AttendancePDF/AttendancePDF.js";
-import { PDFDownloadLink, usePDF } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import EditProfile from "./EditProfile";
 
 const GENERATE_QR_OPTION = "GenerateQR";
@@ -40,12 +38,9 @@ class Subject extends Component {
     await refs.on('value', snapshot => {
       snapshot.forEach(childSnapshot => {
         const childData = childSnapshot.val();
-        //console.log(childSnapshot.key);
+
         if(childData.name === this.props.match.params.id) {
-          
           this.setState({ currentCourse : childData, email: email });
-          console.log(this.state.currentCourse.scores["10%"]);
-          console.log(this.state.currentCourse.schedule);
         }
       });
     });
@@ -70,29 +65,26 @@ class Subject extends Component {
   exportAttendance(){
     this.setState({attendance : []})
     database
-        .ref('attendance/')
-        .once('value')
-        .then(snapshot => {
-            snapshot.forEach((child) => {
-                let dict = child.val()
-                if (dict["course"] == this.state.currentCourse.name){
-                  this.setState({attendance: this.state.attendance.concat(dict)})
-                }
-            });
-            console.log("data");
-            console.log(this.state.attendance)
-        });
+      .ref('attendance/')
+      .once('value')
+      .then(snapshot => {
+          snapshot.forEach((child) => {
+              let dict = child.val()
+              if (dict["course"] == this.state.currentCourse.name){
+                this.setState({attendance: this.state.attendance.concat(dict)})
+              }
+          });
+      });
 
     return this.state.attendance;
   }
 
 
   render() {
-    console.log(this.state.currentCourse.scores);
     let keys;
+
     if(this.state.currentCourse.scores) {
       keys = Object.keys(this.state.currentCourse.scores);
-      console.log(keys);  
     }
     
     return (
@@ -104,11 +96,10 @@ class Subject extends Component {
                 <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
                 <div>
                   {this.state.currentCourse.general_info}
-                  {!CheckIfUserIsStudent(this.state.email) &&<EditProfile></EditProfile>
-                  }
-                  
+                  {!CheckIfUserIsStudent(this.state.email) &&<EditProfile></EditProfile>}
                 </div>
               </div>
+
               <div className="row">
                 <h3>Evaluare pe parcurs</h3>
                 <div>
@@ -121,6 +112,7 @@ class Subject extends Component {
                 </div>
               </div>
             </div>
+
             <div className="col-md-4">
               <h3>Orar</h3> 
               <table>
@@ -145,6 +137,7 @@ class Subject extends Component {
             </div>
           </div>
         </div>
+
         <div className="container buttons-section">
           <div className="row">
             {CheckIfUserIsStudent(this.state.email) ?
@@ -167,13 +160,15 @@ class Subject extends Component {
               </Button>
             }
             <Button className="col-md" variant="secondary" onClick={(e) => this.togglePopupQr(e, STATISTICS_OPTION)}>
-                { this.state.optionChosen == STATISTICS_OPTION && this.state.isOpen && (
-                  <Popup 
-                    handleClose={this.togglePopupQr}
-                    time={this.state.time} 
-                    course={this.state.currentCourse.name} 
-                    button={STATISTICS_OPTION}/>
-                )}
+                { this.state.optionChosen == STATISTICS_OPTION && this.state.isOpen && 
+                  (
+                    <Popup 
+                      handleClose={this.togglePopupQr}
+                      time={this.state.time} 
+                      course={this.state.currentCourse.name} 
+                      button={STATISTICS_OPTION}/>
+                  )
+                }
               Statistici prezenta
             </Button>
             {

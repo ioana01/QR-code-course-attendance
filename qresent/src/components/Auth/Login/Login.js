@@ -2,12 +2,11 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContexts";
 import { Link, useHistory } from "react-router-dom";
+import { CheckIfUserIsAdmin } from '../../../utils/utils.js';
 import './Login.css'
-import { CheckIfUserIsAdmin, CheckIfUserIsStudent } from '../../../utils/utils.js';
+
 export default function Login() {
     const emailRef = useRef();
-    console.log("in login");
-    console.log(emailRef);
     const passwordRef = useRef(); 
     const { login } = useAuth();
     const [error, setError] = useState("");
@@ -18,19 +17,20 @@ export default function Login() {
         e.preventDefault()
     
         try {
-          setError("")
-          setLoading(true)
-          await login(emailRef.current.value, passwordRef.current.value)
-          if(CheckIfUserIsAdmin(emailRef.current.value)){
-            history.push("/admin")
-          }
-          else 
-            history.push("/")
+            setError("");
+            setLoading(true);
+            await login(emailRef.current.value, passwordRef.current.value);
+            if(CheckIfUserIsAdmin(emailRef.current.value)) {
+                history.push("/admin")
+            }
+            else {
+                history.push("/")
+            }
         } catch(error) {
           setError(error.message);
         }
     
-        setLoading(false)
+        setLoading(false);
     }
 
     
@@ -40,6 +40,7 @@ export default function Login() {
                 <Card.Body>
                     <h2 className="text-center mb-4">Login</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
+
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
@@ -57,6 +58,7 @@ export default function Login() {
                     </Form>
                 </Card.Body>
             </Card>
+            
             <div className="w-100 text-center mt-2">
                 Need an account? <Link to="/signup">Sign Up</Link>
             </div>

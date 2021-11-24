@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from "react-router-dom";
-import { database, auth } from "../../firebase";
-import { Multiselect } from 'multiselect-react-dropdown';
+import { database } from "../../firebase";
 import { Button } from "react-bootstrap";
 import Select from 'react-select';
 import { withRouter } from 'react-router-dom';
@@ -17,8 +14,8 @@ class UpdateUser extends Component {
             subjectsList: [],
             studentEntry: "",
             options:  props.location.state.student.courses ? props.location.state.student.courses.map(course => ({
-                "value": course, "label": course
-            })) : [],
+                            "value": course, "label": course
+                        })) : [],
             courses: props.location.state.student.courses
         }
         this.handleChange = this.handleChange.bind(this);
@@ -38,8 +35,6 @@ class UpdateUser extends Component {
 
     componentDidMount() {
         let subjectsNameList = [];
-        let students = [];
-
         const subjectsRefs = database.ref('materii');
         const studentRefs = database.ref('students');
 
@@ -48,12 +43,14 @@ class UpdateUser extends Component {
                 const childData = childSnapshot.val();
                 subjectsNameList.push(childData.name);
             });
+
             this.setState({ subjectsList : subjectsNameList});
         });
 
         studentRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 const childData = childSnapshot.val();
+                    
                 if(childData.email === this.state.student.email) {
                     const key = childSnapshot.key
                     this.setState({studentEntry: key})

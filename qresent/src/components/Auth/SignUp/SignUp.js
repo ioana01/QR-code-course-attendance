@@ -29,19 +29,19 @@ export default function SignUp() {
         database.ref('students').push(userData);
     
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-          return setError("Passwords do not match")
+          return setError("Passwords do not match");
         }
     
         try {
-          setError("")
-          setLoading(true)
-          await signup(emailRef.current.value, passwordRef.current.value)
-          history.push("/")
+          setError("");
+          setLoading(true);
+          await signup(emailRef.current.value, passwordRef.current.value);
+          history.push("/");
         } catch(error) {
             setError(error.message);
         }
     
-        setLoading(false)
+        setLoading(false);
     }
 
     return (
@@ -50,6 +50,7 @@ export default function SignUp() {
                 <Card.Body>
                     <h2 className="text-center mb-4">Sign Up</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
+
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id="name">
                             <Form.Label>Name</Form.Label>
@@ -93,6 +94,7 @@ export default function SignUp() {
                     </Form>
                 </Card.Body>
             </Card>
+            
             <div className="w-100 text-center mt-2" id='login-check'>
                 Already have an account? <Link to="/login">Log In</Link>
             </div>

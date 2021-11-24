@@ -6,10 +6,9 @@ function random() {
   var len = 20;
   var str = "";
   for (var i = 0; i < len; i++) {
-    // Loop `len` times
-    var rand = Math.floor(Math.random() * 62); // random: 0..61
-    var charCode = (rand += rand > 9 ? (rand < 36 ? 55 : 61) : 48); // Get correct charCode
-    str += String.fromCharCode(charCode); // add Character to str
+    var rand = Math.floor(Math.random() * 62); 
+    var charCode = (rand += rand > 9 ? (rand < 36 ? 55 : 61) : 48); 
+    str += String.fromCharCode(charCode); 
   }
   return str;
 }

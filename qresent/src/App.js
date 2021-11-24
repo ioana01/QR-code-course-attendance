@@ -19,12 +19,9 @@ function App() {
 
   return (
     <>
-      
       <div
         className="align-items-center justify-content-center"
-        // style={{ minHeight: "100vh" }}
       >
-        {/* Container */}
         <div className="w-100">
           <Router>
             <AuthProvider>
@@ -49,4 +46,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

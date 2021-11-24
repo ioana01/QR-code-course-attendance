@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Container, Card, makeStyles, TextField, Button } from 'react-bootstrap';
-import QRCode from 'qrcode';
+import { Container, Card, Button } from 'react-bootstrap';
 import QrReader from 'react-qr-reader';
 import { store, useGlobalState } from 'state-pool';
 import './ScanQR.css';
@@ -9,9 +8,7 @@ import { auth, database } from '../../firebase';
 store.setState("count", 0);
 
 export default function ScanQr() {
-    const [text, setText] = useState('');
     const [currentUser, setUser] = useState({});
-    const [imageUrl, setImageUrl] = useState('');
     const [file_upload_message, setFileMessage] = useState('');
     const [web_cam_message, setWebCamMessage] = useState('');
     const [scanResultFile, setScanResultFile] = useState('');
@@ -20,9 +17,6 @@ export default function ScanQr() {
     const [count, setCount] = useGlobalState("count");
 
     useEffect(() => {
-        const email = auth.currentUser.email;
-        console.log(email)
-
         database
         .ref('students/')
         .once('value')
@@ -31,11 +25,8 @@ export default function ScanQr() {
                 let dict = child.val();
                 if (dict["email"] == auth.currentUser.email){
                     setUser(child.val());
-                    console.log(currentUser);
                 }
             });
-            console.log("data")
-            // console.log(this.state.currentUser["email"])
         });
     }, [])
 

@@ -1,7 +1,6 @@
 import React, {Component}  from 'react';
 import {Pie} from 'react-chartjs-2';
-import {Chart} from 'chart.js';
-import { database, auth } from "../../../firebase";
+import { database } from "../../../firebase";
 
 class PieChart extends Component {
     constructor(props) {
@@ -38,7 +37,6 @@ class PieChart extends Component {
           snapshot.forEach(childSnapshot => {
               const childData = childSnapshot.val();
               
-              // check if the student is enrolled
               if (childData.courses && childData.courses.includes(props.course)) {
                 this.state.enrolledStudents++;
               }
@@ -58,46 +56,47 @@ class PieChart extends Component {
     }
 
     statePieChart(props) {
-        return  {
+      return  {
         labels: ['Prezenti', 'Absenti'],
         datasets: [
-        {
+          {
             label: 'Rainfall',
             backgroundColor: [
-            '#B5E056',
-            '#E95959'
+              '#B5E056',
+              '#E95959'
             ],
             hoverBackgroundColor: [
-            '#95B749', //green
-            '#C14B4B' //red
+              '#95B749', //green
+              '#C14B4B' //red
             ],
             data: [this.state.presentStudents, this.state.enrolledStudents - this.state.presentStudents]
-        }]
-        }
+          }
+        ]
+      }
     }
   
     render() {
-        return (
+      return (
         <div className="piecontainer d-flex justify-content-center">
-            <Pie  className="piecontainer"
-            data={this.statePieChart()}
-            width={400}
-            height={400}
-            options={{
+          <Pie className="piecontainer"
+            data = {this.statePieChart()}
+            width = {400}
+            height = {400}
+            options = {{
                 plugins: {
-                title:{
-                display:true,
-                text:'Statistica Studenti prezenti/Studenti absenti'
-                },
-                legend:{
-                position:'top'
-                }
+                  title: {
+                    display:true,
+                    text:'Statistica Studenti prezenti/Studenti absenti'
+                  },
+                  legend:{
+                    position:'top'
+                  }
                 },
                 maintainAspectRatio: false
             }}
-            />
+          />
         </div>
-        );
+      );
     }
 }
 

@@ -18,6 +18,7 @@ class Form extends Component {
             We'll never share your email with anyone else.
           </small>
         </div>
+
         <div class="form-group">
           <label for="exampleInputPassword1">Password</label>
           <input
@@ -27,6 +28,7 @@ class Form extends Component {
             placeholder="Password"
           ></input>
         </div>
+        
         <button type="submit" class="btn btn-primary">
           Submit
         </button>

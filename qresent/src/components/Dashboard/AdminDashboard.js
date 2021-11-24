@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import Table from './Table.js';
-import { database, auth } from "../../firebase";
+import { database } from "../../firebase";
 
 class AdminDashboard extends Component{
     constructor(props) {
@@ -9,6 +9,7 @@ class AdminDashboard extends Component{
             studentList: []
         }
     }
+
     async componentDidMount() {
         let studentNameList = [];
         const studentRefs = database.ref('students');
@@ -25,25 +26,28 @@ class AdminDashboard extends Component{
     }
 
     render(){
-        return(    this.state.studentList.length &&
+        return (    
+            this.state.studentList.length &&
             <div className="container mt-5">
-                    <table className="table" > 
-                    <thead style={{backgroundColor: "rgba(33, 37, 41)", color: "white"}}>
-                        <th></th>
-                        <th scope="col">Nume</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Cursuri</th>
-                        <th scope="col">Grupa</th>
-                        <th scope="col">Operatii tabel</th>
-                    </thead>
-                    <tbody>
-                        {this.state.studentList.map(student => (
-                                <Table student={student}/>
-                        ))}
-                    </tbody>
-                    </table>
-                
-            </div>);
+                <table className="table" > 
+                <thead style={{backgroundColor: "rgba(33, 37, 41)", color: "white"}}>
+                    <th></th>
+                    <th scope="col">Nume</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Cursuri</th>
+                    <th scope="col">Grupa</th>
+                    <th scope="col">Operatii tabel</th>
+                </thead>
+                <tbody>
+                    {
+                        this.state.studentList.map(student => (
+                            <Table student={student}/>
+                        ))
+                    }
+                </tbody>
+                </table>
+            </div>
+        );
     }
 }
 
