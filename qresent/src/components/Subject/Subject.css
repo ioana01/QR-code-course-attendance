@@ -22,3 +22,11 @@
   background: radial-gradient(#e5e5e5, #ffff, #e5e5e5);
 }
   
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}

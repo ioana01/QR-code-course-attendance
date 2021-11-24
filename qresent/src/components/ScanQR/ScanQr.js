@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container, Card, makeStyles, TextField, Button } from 'react-bootstrap';
 import QRCode from 'qrcode';
 import QrReader from 'react-qr-reader';
@@ -10,6 +10,7 @@ store.setState("count", 0);
 
 export default function ScanQr() {
     const [text, setText] = useState('');
+    const [currentUser, setUser] = useState({});
     const [imageUrl, setImageUrl] = useState('');
     const [file_upload_message, setFileMessage] = useState('');
     const [web_cam_message, setWebCamMessage] = useState('');
@@ -17,6 +18,26 @@ export default function ScanQr() {
     const [scanResultWebCam, setScanResultWebCam] =  useState('');
     const qrRef = useRef(null);
     const [count, setCount] = useGlobalState("count");
+
+    useEffect(() => {
+        const email = auth.currentUser.email;
+        console.log(email)
+
+        database
+        .ref('students/')
+        .once('value')
+        .then(snapshot => {
+            snapshot.forEach((child) => {
+                let dict = child.val();
+                if (dict["email"] == auth.currentUser.email){
+                    setUser(child.val());
+                    console.log(currentUser);
+                }
+            });
+            console.log("data")
+            // console.log(this.state.currentUser["email"])
+        });
+    }, [])
 
     const handleErrorFile = (error) => {
         setFileMessage(error);
@@ -50,7 +71,9 @@ export default function ScanQr() {
                 const user = {
                     moodle_account: auth.currentUser.email.split('@')[0],
                     time: (new Date()).toString(),
-                    course: params[Object.keys(params)[1]].split('$')[0]
+                    course: params[Object.keys(params)[1]].split('$')[0],
+                    name: currentUser.name,
+                    group: currentUser.group
                 }
                 database.ref('attendance').push(user);
             }
@@ -86,7 +109,9 @@ export default function ScanQr() {
                 const user = {
                     moodle_account: auth.currentUser.email.split('@')[0],
                     time: (new Date()).toString(),
-                    course: params[Object.keys(params)[1]].split('$')[0]
+                    course: params[Object.keys(params)[1]].split('$')[0],
+                    name: currentUser.name,
+                    group: currentUser.group
                 }
                 database.ref('attendance').push(user);
             }
