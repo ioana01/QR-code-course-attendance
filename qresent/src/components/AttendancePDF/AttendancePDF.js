@@ -2,6 +2,7 @@ import React from 'react';
 import { Document, Page, StyleSheet } from '@react-pdf/renderer';
 import {Table, TableBody, TableHeader, DataTableCell, TableCell} from '@david.kucsai/react-pdf-table';
 import { database } from "../../firebase";
+import { format } from "date-fns";
 
 const styles = StyleSheet.create({
   page: {
@@ -25,7 +26,7 @@ const exportAttendance = (courseName) => {
       .then(snapshot => {
           snapshot.forEach((child) => {
               let dict = child.val()
-              if (dict["course"] == courseName){
+              if (dict["course"] == courseName && dict["time"] == (new Date()).toString()){
                 attendance.push(dict)
               }
           });
@@ -33,6 +34,14 @@ const exportAttendance = (courseName) => {
 
     return attendance;
 }
+
+function getParsedDate(strDate){
+  var date = new Date(strDate);
+
+  var formattedDate = format(date, "MMMM do, yyyy HH:mm:ss");
+  return formattedDate;
+}
+
 
 const AttendancePDF = ({data}) => (
   <Document>
@@ -42,6 +51,12 @@ const AttendancePDF = ({data}) => (
             <TableCell>
               Moodle Account
             </TableCell>
+            <TableCell>
+              Name
+            </TableCell>
+            <TableCell>
+              Group
+            </TableCell>
   
             <TableCell>
               Time
@@ -50,7 +65,9 @@ const AttendancePDF = ({data}) => (
 
           <TableBody>
             <DataTableCell getContent={(r) => r.moodle_account}/>
-            <DataTableCell getContent={(r) => r.time}/>
+            <DataTableCell getContent={(r) => r.name}/>
+            <DataTableCell getContent={(r) => r.group}/>
+            <DataTableCell getContent={(r) => getParsedDate(r.time)}/>
           </TableBody>
         </Table>
     </Page>

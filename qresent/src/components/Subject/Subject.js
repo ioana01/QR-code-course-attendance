@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import AttendancePDF from "../AttendancePDF/AttendancePDF.js";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import EditProfile from "./EditProfile";
+import { format } from "date-fns";
 
 const GENERATE_QR_OPTION = "GenerateQR";
 const STATISTICS_OPTION = "Statistics";
@@ -61,6 +62,12 @@ class Subject extends Component {
     database.ref('materii').child('-MnQPdcSCdce2rc9jtoj').update({'name': 'APD....'})
   }
 
+  getParsedDate(strDate){
+    var date = new Date(strDate);
+  
+    var formattedDate = format(date, "MMMM do yyyy");
+    return formattedDate;
+  }
 
   exportAttendance(){
     this.setState({attendance : []})
@@ -70,7 +77,7 @@ class Subject extends Component {
       .then(snapshot => {
           snapshot.forEach((child) => {
               let dict = child.val()
-              if (dict["course"] == this.state.currentCourse.name){
+              if (dict["course"] == this.state.currentCourse.name && this.getParsedDate(dict["time"]) == this.getParsedDate(new Date()).toString()){
                 this.setState({attendance: this.state.attendance.concat(dict)})
               }
           });
