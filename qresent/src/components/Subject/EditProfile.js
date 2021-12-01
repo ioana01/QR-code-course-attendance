@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import app from "../../firebase.js"
 import { database, auth } from "../../firebase";
 import { withRouter } from "react-router";
+import { Button } from "react-bootstrap"
+import { style } from "dom-helpers";
 
 class EditProfile extends Component {
+  
     constructor(props) {
         super(props);
         this.state = {
@@ -52,12 +55,15 @@ class EditProfile extends Component {
 
   
   render() {
-    return (  
+    return ( 
       <div>     
-        <div id="container">       
-          <p id="edit"><b> Click "Edit" button to edit content. </b></p>
-          <button onClick={this.editt} id="edit-button">Edit</button>
-          <button onClick={this.editt} id="end-editing">Done</button>
+        <div id="container">
+          <p id="edit"><b> Click "Edit" button to edit content. </b></p>      
+          <div className="row">
+          <Button className="col-auto" variant="dark" onClick={this.editt} id="edit-button">Edit</Button>
+          <p className="col-auto" ><b></b></p>
+          <Button className="col-auto" variant="dark" onClick={this.editt} id="end-editing">Done</Button>
+          </div>
         </div>
       </div>
     );
