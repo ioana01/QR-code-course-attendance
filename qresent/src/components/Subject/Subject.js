@@ -23,6 +23,12 @@ class Subject extends Component {
       optionChosen: "",
       attendance: []
     }
+    
+    this.editare = this.editare.bind(this);
+    this.editare1 = this.editare1.bind(this);
+    this.editare2 = this.editare2.bind(this);
+    this.editare3 = this.editare3.bind(this);
+    this.editare4 = this.editare4.bind(this);
   }
 
   togglePopupQr = (e, option) => {
@@ -41,6 +47,7 @@ class Subject extends Component {
 
         if(childData.name === this.props.match.params.id) {
           this.setState({ currentCourse : childData, email: email });
+          this.setState({materieKey : childSnapshot.key});
         }
       });
     });
@@ -79,7 +86,86 @@ class Subject extends Component {
     return this.state.attendance;
   }
 
-
+  editare = (event) => {
+    const par = document.getElementById("editare");
+    const edit_button = document.getElementById("10");
+    const end_button = document.getElementById("10-end");
+    
+    edit_button.addEventListener("click", function() {
+      par.contentEditable = true;
+      par.style.backgroundColor = "#dddbdb";
+    } );
+    
+    end_button.addEventListener("click", function() {
+      par.contentEditable = false;
+      par.style.backgroundColor = "#ffe44d";
+    } );
+    database.ref('materii').child(this.state.materieKey).child('scores').update({'10%':par.innerText});
+  }
+  editare1 = (event) => {
+    const par = document.getElementById("editare1");
+    const edit_button = document.getElementById("15");
+    const end_button = document.getElementById("15-end");
+    
+    edit_button.addEventListener("click", function() {
+      par.contentEditable = true;
+      par.style.backgroundColor = "#dddbdb";
+    } );
+    
+    end_button.addEventListener("click", function() {
+      par.contentEditable = false;
+      par.style.backgroundColor = "#ffe44d";
+    } );
+    database.ref('materii').child(this.state.materieKey).child('scores').update({'15%':par.innerText});
+  }
+  editare2 = (event) => {
+    const par = document.getElementById("editare2");
+    const edit_button = document.getElementById("20");
+    const end_button = document.getElementById("20-end");
+    
+    edit_button.addEventListener("click", function() {
+      par.contentEditable = true;
+      par.style.backgroundColor = "#dddbdb";
+    } );
+    
+    end_button.addEventListener("click", function() {
+      par.contentEditable = false;
+      par.style.backgroundColor = "#ffe44d";
+    } );
+    database.ref('materii').child(this.state.materieKey).child('scores').update({'20%':par.innerText});
+  }
+  editare3 = (event) => {
+    const par = document.getElementById("editare3");
+    const edit_button = document.getElementById("35");
+    const end_button = document.getElementById("35-end");
+    
+    edit_button.addEventListener("click", function() {
+      par.contentEditable = true;
+      par.style.backgroundColor = "#dddbdb";
+    } );
+    
+    end_button.addEventListener("click", function() {
+      par.contentEditable = false;
+      par.style.backgroundColor = "#ffe44d";
+    } );
+    database.ref('materii').child(this.state.materieKey).child('scores').update({'35%':par.innerText});
+  }
+  editare4 = (event) => {
+    const par = document.getElementById("editare4");
+    const edit_button = document.getElementById("40");
+    const end_button = document.getElementById("40-end");
+    
+    edit_button.addEventListener("click", function() {
+      par.contentEditable = true;
+      par.style.backgroundColor = "#dddbdb";
+    } );
+    
+    end_button.addEventListener("click", function() {
+      par.contentEditable = false;
+      par.style.backgroundColor = "#ffe44d";
+    } );
+    database.ref('materii').child(this.state.materieKey).child('scores').update({'40%':par.innerText});
+  }
   render() {
     let keys;
 
@@ -103,10 +189,67 @@ class Subject extends Component {
               <div className="row">
                 <h3>Evaluare pe parcurs</h3>
                 <div>
-                  {
+                  {!CheckIfUserIsStudent(this.state.email) &&
                     keys && 
                     keys.map(key => {
-                      return <li>{key}: {this.state.currentCourse.scores[key]}</li>
+                      if(key == '10%'){
+                        return <li>
+                          <div className="row">
+                          <Button className="col-auto" variant="dark" onClick={this.editare} id="10">{key}</Button>
+                          <p className="col-auto" id="editare">{this.state.currentCourse.scores[key]} </p> 
+                          <Button className="col-auto" variant="dark" onClick={this.editare} id="10-end">Done</Button>
+                          </div>
+                          </li>
+                          
+                        }
+                        if(key == '15%'){
+                          return <li>
+                            <div className="row">
+                            <Button className="col-auto" variant="dark" onClick={this.editare1} id="15">{key}</Button>
+                            <p className="col-auto" id="editare1">{this.state.currentCourse.scores[key]} </p> 
+                            <Button className="col-auto" variant="dark" onClick={this.editare1} id="15-end">Done</Button>
+                            </div>
+                            </li>
+                            
+                          }
+                        if(key == '20%'){
+                          return <li>
+                            <div className="row">
+                            <Button className="col-auto" variant="dark" onClick={this.editare2} id="20">{key}</Button>
+                            <p className="col-auto" id="editare2">{this.state.currentCourse.scores[key]} </p> 
+                            <Button className="col-auto" variant="dark" onClick={this.editare2} id="20-end">Done</Button>
+                            </div>
+                            </li>
+                              
+                          }
+                        if(key == '35%'){
+                          return <li>
+                            <div className="row">
+                            <Button className="col-auto" variant="dark" onClick={this.editare3} id="35">{key}</Button>
+                            <p className="col-auto" id="editare3">{this.state.currentCourse.scores[key]} </p> 
+                            <Button className="col-auto" variant="dark" onClick={this.editare3} id="35-end">Done</Button>
+                            </div>
+                            </li>
+                                
+                          }
+                        if(key == '40%'){
+                          return <li>
+                            <div className="row">
+                            <Button className="col-auto" variant="dark" onClick={this.editare4} id="40">{key}</Button>
+                            <p className="col-auto" id="editare4">{this.state.currentCourse.scores[key]} </p> 
+                            <Button className="col-auto" variant="dark" onClick={this.editare4} id="40-end">Done</Button>
+                            </div>
+                            </li>
+                                  
+                          }
+                    })
+                  }
+                  {CheckIfUserIsStudent(this.state.email) &&
+                    keys && 
+                    keys.map(key => {
+                      return <li>
+                        {key}: {this.state.currentCourse.scores[key]} 
+                        </li>
                     })
                   }
                 </div>
@@ -132,6 +275,7 @@ class Subject extends Component {
                         <td>{element["sala"]}</td>
                       </tr>
                   })
+                  
                 }
               </table>
             </div>
