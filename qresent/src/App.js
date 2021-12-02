@@ -14,8 +14,11 @@ import Profile from "./components/Profile/Profile"
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import UpdateUser from "./components/Dashboard/UpdateUser";
 import EditProfile from "./components/Subject/EditProfile";
+import StudentsManagement from "./components/Auth/Users/StudentsManagement";
+import TeachersManagement from "./components/Auth/Users/TeachersManagement";
 
 function App() {
+  
 
   return (
     <>
@@ -30,6 +33,8 @@ function App() {
                 <PrivateRoute exact path="/" component={Dashboard}/>
                 <PrivateRoute exact path="/admin" component={AdminDashboard}/>
                 <PrivateRoute exact path="/admin/:user" component={UpdateUser}/>
+                <PrivateRoute exact path="/addStudent" component={StudentsManagement}/>
+                <PrivateRoute exact path="/addTeacher" component={TeachersManagement}/>
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/subject/:id" component={Subject}/>

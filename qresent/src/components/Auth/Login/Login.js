@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContexts";
 import { Link, useHistory } from "react-router-dom";
-import { CheckIfUserIsAdmin } from '../../../utils/utils.js';
-import './Login.css'
+import { CheckIfUserIsAdmin, CheckIfUserIsActive} from '../../../utils/utils.js';
+import './Login.css';
 
 export default function Login() {
     const emailRef = useRef();
@@ -13,9 +13,18 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const history = useHistory();
    
+    function handleLogIn(e) {
+        e.preventDefault()
+
+        if(CheckIfUserIsActive(emailRef.current.value, 'students')||
+        CheckIfUserIsActive(emailRef.current.value, 'professors') ||
+        CheckIfUserIsAdmin(emailRef.current.value)) {
+            handleSubmit(e);
+        }
+    }
+
     async function handleSubmit(e) {
         e.preventDefault()
-    
         try {
             setError("");
             setLoading(true);
@@ -25,7 +34,7 @@ export default function Login() {
             }
             else {
                 history.push("/")
-            }
+            } 
         } catch(error) {
           setError(error.message);
         }
@@ -41,7 +50,7 @@ export default function Login() {
                     <h2 className="text-center mb-4">Login</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
 
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleLogIn}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} required />
