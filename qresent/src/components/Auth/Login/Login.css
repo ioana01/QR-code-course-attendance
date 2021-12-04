@@ -4,3 +4,11 @@
     padding: 0 2rem;
     margin-top: 40px;
 }
+
+.auth-button {
+    background-color: "#343a40";
+}
+
+.auth-button:hover {
+    background-color: #5c636a;
+}

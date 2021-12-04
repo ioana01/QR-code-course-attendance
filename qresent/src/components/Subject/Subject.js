@@ -24,12 +24,6 @@ class Subject extends Component {
       optionChosen: "",
       attendance: []
     }
-    
-    this.editare = this.editare.bind(this);
-    this.editare1 = this.editare1.bind(this);
-    this.editare2 = this.editare2.bind(this);
-    this.editare3 = this.editare3.bind(this);
-    this.editare4 = this.editare4.bind(this);
   }
 
   togglePopupQr = (e, option) => {
@@ -71,8 +65,8 @@ class Subject extends Component {
 
   getParsedDate(strDate){
     var date = new Date(strDate);
-  
     var formattedDate = format(date, "MMMM do yyyy");
+
     return formattedDate;
   }
 
@@ -93,86 +87,25 @@ class Subject extends Component {
     return this.state.attendance;
   }
 
-  editare = (event) => {
-    const par = document.getElementById("editare");
-    const edit_button = document.getElementById("10");
-    const end_button = document.getElementById("10-end");
-    
-    edit_button.addEventListener("click", function() {
-      par.contentEditable = true;
-      par.style.backgroundColor = "#dddbdb";
-    } );
-    
-    end_button.addEventListener("click", function() {
-      par.contentEditable = false;
-      par.style.backgroundColor = "#ffe44d";
-    } );
-    database.ref('materii').child(this.state.materieKey).child('scores').update({'10%':par.innerText});
+  edit_button = (key) => {
+    const edit_button = document.getElementById(key);
+    console.log(edit_button);
+    const txt = document.getElementById(key + 'text');
+
+    txt.contentEditable = true;
+    txt.style.backgroundColor = "#dddbdb";
   }
-  editare1 = (event) => {
-    const par = document.getElementById("editare1");
-    const edit_button = document.getElementById("15");
-    const end_button = document.getElementById("15-end");
-    
-    edit_button.addEventListener("click", function() {
-      par.contentEditable = true;
-      par.style.backgroundColor = "#dddbdb";
-    } );
-    
-    end_button.addEventListener("click", function() {
-      par.contentEditable = false;
-      par.style.backgroundColor = "#ffe44d";
-    } );
-    database.ref('materii').child(this.state.materieKey).child('scores').update({'15%':par.innerText});
+
+  done_button = (key) => {
+    const txt = document.getElementById(key + 'text');
+    const done_button = document.getElementById(key + 'done');
+
+    txt.contentEditable = false;
+    txt.style.backgroundColor = "#ffe44d";
+
+    database.ref('materii').child(this.state.materieKey).child('scores').update({[key]: txt.innerText});
   }
-  editare2 = (event) => {
-    const par = document.getElementById("editare2");
-    const edit_button = document.getElementById("20");
-    const end_button = document.getElementById("20-end");
-    
-    edit_button.addEventListener("click", function() {
-      par.contentEditable = true;
-      par.style.backgroundColor = "#dddbdb";
-    } );
-    
-    end_button.addEventListener("click", function() {
-      par.contentEditable = false;
-      par.style.backgroundColor = "#ffe44d";
-    } );
-    database.ref('materii').child(this.state.materieKey).child('scores').update({'20%':par.innerText});
-  }
-  editare3 = (event) => {
-    const par = document.getElementById("editare3");
-    const edit_button = document.getElementById("35");
-    const end_button = document.getElementById("35-end");
-    
-    edit_button.addEventListener("click", function() {
-      par.contentEditable = true;
-      par.style.backgroundColor = "#dddbdb";
-    } );
-    
-    end_button.addEventListener("click", function() {
-      par.contentEditable = false;
-      par.style.backgroundColor = "#ffe44d";
-    } );
-    database.ref('materii').child(this.state.materieKey).child('scores').update({'35%':par.innerText});
-  }
-  editare4 = (event) => {
-    const par = document.getElementById("editare4");
-    const edit_button = document.getElementById("40");
-    const end_button = document.getElementById("40-end");
-    
-    edit_button.addEventListener("click", function() {
-      par.contentEditable = true;
-      par.style.backgroundColor = "#dddbdb";
-    } );
-    
-    end_button.addEventListener("click", function() {
-      par.contentEditable = false;
-      par.style.backgroundColor = "#ffe44d";
-    } );
-    database.ref('materii').child(this.state.materieKey).child('scores').update({'40%':par.innerText});
-  }
+
   render() {
     let keys;
 
@@ -189,7 +122,7 @@ class Subject extends Component {
                 <h3>Informatii generale pentru materia {this.state.currentCourse.name}</h3>
                 <div>
                   {this.state.currentCourse.general_info}
-                  {!CheckIfUserIsStudent(this.state.email) &&<EditProfile></EditProfile>}
+                  {!CheckIfUserIsStudent(this.state.email) && <EditProfile></EditProfile>}
                 </div>
               </div>
 
@@ -199,64 +132,18 @@ class Subject extends Component {
                   {!CheckIfUserIsStudent(this.state.email) &&
                     keys && 
                     keys.map(key => {
-                      if(key == '10%'){
-                        return <li>
-                          <div className="row">
-                          <Button className="col-auto" variant="dark" onClick={this.editare} id="10">{key}</Button>
-                          <p className="col-auto" id="editare">{this.state.currentCourse.scores[key]} </p> 
-                          <Button className="col-auto" variant="dark" onClick={this.editare} id="10-end">Done</Button>
-                          </div>
+                        return <li className="list-element">
+                              <span className="col-auto">{key}</span>
+                              <span className="col-auto score-value" id={key + 'text'}>{this.state.currentCourse.scores[key]} </span> 
+                              <Button className="col-auto subject-button" variant="dark" onClick={() => this.edit_button(key)} id={key}>Edit</Button>
+                              <Button className="col-auto subject-button" variant="dark" onClick={() => this.done_button(key)} id={key + "done"}>Done</Button>
                           </li>
-                          
-                        }
-                        if(key == '15%'){
-                          return <li>
-                            <div className="row">
-                            <Button className="col-auto" variant="dark" onClick={this.editare1} id="15">{key}</Button>
-                            <p className="col-auto" id="editare1">{this.state.currentCourse.scores[key]} </p> 
-                            <Button className="col-auto" variant="dark" onClick={this.editare1} id="15-end">Done</Button>
-                            </div>
-                            </li>
-                            
-                          }
-                        if(key == '20%'){
-                          return <li>
-                            <div className="row">
-                            <Button className="col-auto" variant="dark" onClick={this.editare2} id="20">{key}</Button>
-                            <p className="col-auto" id="editare2">{this.state.currentCourse.scores[key]} </p> 
-                            <Button className="col-auto" variant="dark" onClick={this.editare2} id="20-end">Done</Button>
-                            </div>
-                            </li>
-                              
-                          }
-                        if(key == '35%'){
-                          return <li>
-                            <div className="row">
-                            <Button className="col-auto" variant="dark" onClick={this.editare3} id="35">{key}</Button>
-                            <p className="col-auto" id="editare3">{this.state.currentCourse.scores[key]} </p> 
-                            <Button className="col-auto" variant="dark" onClick={this.editare3} id="35-end">Done</Button>
-                            </div>
-                            </li>
-                                
-                          }
-                        if(key == '40%'){
-                          return <li>
-                            <div className="row">
-                            <Button className="col-auto" variant="dark" onClick={this.editare4} id="40">{key}</Button>
-                            <p className="col-auto" id="editare4">{this.state.currentCourse.scores[key]} </p> 
-                            <Button className="col-auto" variant="dark" onClick={this.editare4} id="40-end">Done</Button>
-                            </div>
-                            </li>
-                                  
-                          }
                     })
                   }
                   {CheckIfUserIsStudent(this.state.email) &&
                     keys && 
                     keys.map(key => {
-                      return <li>
-                        {key}: {this.state.currentCourse.scores[key]} 
-                        </li>
+                      return <li> {key}: {this.state.currentCourse.scores[key]} </li>
                     })
                   }
                 </div>
@@ -292,12 +179,9 @@ class Subject extends Component {
         <div className="container buttons-section">
           <div className="row">
             {CheckIfUserIsStudent(this.state.email) ?
-              <Button className="col-md" variant="secondary">
-                <Link style={{textDecoration: "none", color: "#ffffff"}} to={{pathname: `/scanqr`}}>
-                  Scan QR code
+                <Link style={{textDecoration: "none", color: "#ffffff", width: "50%"}} to={{pathname: `/scanqr`}}>
+                  <Button className="col-md" variant="secondary">Scan QR code</Button>
                 </Link>
-              </Button>
-              // <Link className="col-md" to={{pathname: `/scanqr`}}> Scan QR Code </Link>
               :
               <Button className="col-md" variant="secondary" onClick={(e) => this.togglePopupQr(e, GENERATE_QR_OPTION)}>
                 { this.state.optionChosen == GENERATE_QR_OPTION && this.state.isOpen && (
@@ -317,20 +201,24 @@ class Subject extends Component {
                       handleClose={this.togglePopupQr}
                       time={this.state.time} 
                       course={this.state.currentCourse.name} 
-                      button={STATISTICS_OPTION}/>
+                      button={STATISTICS_OPTION}
+                    />
                   )
                 }
               Statistici prezenta
             </Button>
             {
               !CheckIfUserIsStudent(this.state.email) &&
-              <Button className="col-md" variant="secondary">
-                  <PDFDownloadLink document={<AttendancePDF data={this.state.attendance}/>} fileName="Prezenta.pdf">
+                  <PDFDownloadLink 
+                    document={<AttendancePDF data={this.state.attendance}/>} 
+                    fileName="Prezenta.pdf" 
+                    className="pdf-download" style={{width: "33%"}}>
                   {({ blob, url, loading, error }) =>
-                    loading ? 'Loading document...' : 'Exporta Lista'
+                    loading ? 
+                    <Button className="col-md" variant="secondary" style={{width: "33%"}}>'Loading document...'</Button> : 
+                    <Button className="col-md" variant="secondary">Exporta Lista</Button>
                   }
                   </PDFDownloadLink>
-              </Button>
             }
           </div>
         </div>

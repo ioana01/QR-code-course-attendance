@@ -1,0 +1,7 @@
+.users-button {
+    background-color: rgb(52, 58, 64) !important;
+}
+
+.users-button:hover {
+    background-color: #5c636a !important;
+}

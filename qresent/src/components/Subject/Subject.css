@@ -30,3 +30,26 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
+
+.subject-button {
+  padding: 5px 10px !important;
+  margin-right: 10px;
+}
+
+.subject-button:hover {
+  background-color: #5c636a !important;
+}
+
+.list-element {
+  margin-bottom: 10px;
+}
+
+.score-value {
+  padding-left: 0;
+}
+
+.pdf-download,
+.pdf-download:hover {
+  text-decoration: none;
+  color: white;
+}

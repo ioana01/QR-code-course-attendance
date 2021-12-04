@@ -9,3 +9,11 @@
 #login-check {
     margin-bottom: 40px;
 }
+
+.auth-button {
+    background-color: rgb(52, 58, 64) !important;
+}
+
+.auth-button:hover {
+    background-color: #5c636a !important;
+}

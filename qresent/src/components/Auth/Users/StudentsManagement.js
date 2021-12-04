@@ -5,6 +5,7 @@ import { database } from "../../../firebase";
 import { Link, useHistory } from "react-router-dom";
 import firebase from 'firebase/compat/app';
 import './../SignUp/SignUp.css';
+import './Users.css';
 
 export default function StudentsManagement() {
     const nameRef = useRef();
@@ -85,10 +86,10 @@ export default function StudentsManagement() {
                             </Form.Select>
                         </Form.Group>
                         <div className="row" style={{"marginTop": 20}}>
-                            <Button className="col-md mr-3 ml-4" disabled={loading} variant="primary" type="submit">
+                            <Button className="col-md mr-3 ml-4 users-button" disabled={loading} type="submit">
                                 Add new user
                             </Button>
-                            <Button className="col-md mr-3 ml-4" variant="primary" onClick={redirectToPage}>
+                            <Button className="col-md mr-3 ml-4 users-button" onClick={redirectToPage}>
                                 Cancel
                             </Button>
                         </div>

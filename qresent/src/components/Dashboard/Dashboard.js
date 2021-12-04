@@ -75,31 +75,33 @@ class Dashboard extends Component{
     }
 
     render(){
-        return(<div>
-                {this.state.courses.length > 0 &&
-                <div>
-                    <div className="container-fluid d-flex justify-content-center">
-                        <div className="row" id="courses">
-                            {
-                                this.state.courses.map(course => (
-                                    <div className="col-md-4">
-                                        <Card imgsrc={img1} course={course}/>
-                                    </div>
-                                ))
-                            }
+        return(
+            <div>
+                {
+                    this.state.courses.length ? 
+                    (<div>
+                        <div className="container-fluid d-flex justify-content-center">
+                            <div className="row" id="courses">
+                                {
+                                    this.state.courses.map(course => (
+                                        <div className="col-md-4">
+                                            <Card imgsrc={img1} course={course}/>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </div>
-                    </div>
-                </div>}
-                {this.state.courses.length == 0 &&
-                <div className="card text-center shadow">
-                <div className="card-body text-dark">
-                <h4 className="card-title">Nu sunteti inrolat inca la niciun curs</h4>
-                  <p className="card-text text-secondary">
-                    Va rugam reveniti mai tarziu
-                  </p>
-                  
-                </div>
-              </div>
+                    </div>)
+                    :     
+                    (<div className="card text-center shadow">
+                        <div className="card-body text-dark">
+                            <h4 className="card-title">Nu sunteti inrolat inca la niciun curs</h4>
+                            <p className="card-text text-secondary">
+                                Va rugam reveniti mai tarziu
+                            </p>
+                        
+                        </div>
+                    </div>)
                 }
             </div>
         );

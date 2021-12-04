@@ -60,9 +60,8 @@ class EditProfile extends Component {
         <div id="container">
           <p id="edit"><b> Click "Edit" button to edit content. </b></p>      
           <div className="row">
-          <Button className="col-auto" variant="dark" onClick={this.editt} id="edit-button">Edit</Button>
-          <p className="col-auto" ><b></b></p>
-          <Button className="col-auto" variant="dark" onClick={this.editt} id="end-editing">Done</Button>
+            <Button className="col-auto subject-button" variant="dark" onClick={this.editt} id="edit-button">Edit</Button>
+            <Button className="col-auto subject-button" variant="dark" onClick={this.editt} id="end-editing">Done</Button>
           </div>
         </div>
       </div>

@@ -61,7 +61,7 @@ export default function Login() {
                             <Form.Control type="password" ref={passwordRef} required />
                         </Form.Group>
 
-                        <Button disabled={loading} className="w-100" type="submit">
+                        <Button disabled={loading} className="w-100 auth-button" type="submit" style={{backgroundColor: "#343a40"}}>
                             Login
                         </Button>
                     </Form>
