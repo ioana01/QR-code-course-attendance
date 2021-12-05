@@ -9,7 +9,13 @@ import './Navbar.css';
 export default function BootstrapNavbar() {
     const { logout } = useAuth();
     const [error, setError] = useState("")
-    const email = auth.currentUser.email;
+    let email = undefined;
+
+    if(auth.currentUser != null) {
+
+        email = auth.currentUser.email
+
+    }
 
     async function handleLogout() {
         setError("")
@@ -31,11 +37,15 @@ export default function BootstrapNavbar() {
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
                                     <Nav className="ml-auto">
-                                        {CheckIfUserIsAdmin(email) ?
-                                            <Nav.Link href="/admin">Dashboard</Nav.Link> :
-                                            <Nav.Link href="/">Dashboard</Nav.Link>
-                                        }
+                                    {email ? (CheckIfUserIsAdmin(email) ?
+
+                                        <Nav.Link href="/admin">Dashboard</Nav.Link> :
+
+                                        <Nav.Link href="/">Dashboard</Nav.Link>) :
+
                                         <Nav.Link href="/">Dashboard</Nav.Link>
+
+                                        }
                                         <Nav.Link href="/profil">Profil</Nav.Link>
                                         <Nav.Link href="/login" onClick={handleLogout}>Log Out</Nav.Link>
                                     </Nav>
