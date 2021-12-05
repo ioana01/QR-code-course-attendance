@@ -3,6 +3,7 @@ import Table from './Table.js';
 import { database } from "../../firebase";
 import { Link } from "react-router-dom";
 import { Tab, Tabs } from 'react-bootstrap';
+
 class AdminDashboard extends Component{
     constructor(props) {
         super(props);
