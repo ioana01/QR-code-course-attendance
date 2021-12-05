@@ -1,19 +1,15 @@
 import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import { useAuth } from "../../../contexts/AuthContexts";
-import { auth } from "../../../firebase";
 import firebase from 'firebase/compat/app'
 import { database } from "../../../firebase";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import './../SignUp/SignUp.css';
 import './Users.css'
-import { CheckIfUserIsAdmin, CheckIfUserIsStudent } from '../../../utils/utils.js';
-
+import { CheckIfUserIsStudent } from '../../../utils/utils.js';
 
 export default function TeachersManagement() {
     const nameRef = useRef();
     const emailRef = useRef();
-    console.log(auth);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useHistory();
@@ -69,10 +65,6 @@ export default function TeachersManagement() {
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" ref={emailRef} placeholder="Enter email" required/>
                         </Form.Group>
-                        {/* <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
-                        </Form.Group> */}
                         <div className="row">
                             <Button className="col-md mr-3 ml-4 users-button" disabled={loading} variant="primary" type="submit">
                                 Add new user

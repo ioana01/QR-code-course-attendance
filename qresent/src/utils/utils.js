@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { database } from "../firebase";
 
 export function CheckIfUserIsStudent(email: string) {
