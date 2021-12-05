@@ -16,7 +16,6 @@ class Dashboard extends Component{
     async componentDidMount() {
         let coursesList = [];
         const subjectsRefs = database.ref('materii');
-        const userSubjects = database.ref();
         const email = auth.currentUser.email;
 
         if(CheckIfUserIsStudent(email)) {
@@ -41,7 +40,6 @@ class Dashboard extends Component{
                     if(studentCoursesList.includes(nume)) {
                         coursesList.push(childData);
                     }
-                    
                 });
 
                 this.setState({ courses : coursesList });
@@ -99,7 +97,6 @@ class Dashboard extends Component{
                             <p className="card-text text-secondary">
                                 Va rugam reveniti mai tarziu
                             </p>
-                        
                         </div>
                     </div>)
                 }

@@ -3,7 +3,8 @@ import { database } from "../../firebase";
 import { Button } from "react-bootstrap";
 import Select from 'react-select';
 import { withRouter } from 'react-router-dom';
-import AdminDashboard from './AdminDashboard.js'
+import AdminDashboard from './AdminDashboard.js';
+import {CheckIfUserIsStudent} from './../../utils/utils.js';
 
 class UpdateUser extends Component {
     constructor(props) {
@@ -27,7 +28,12 @@ class UpdateUser extends Component {
     }
 
     handleSubmit() {
-        database.ref('/students').child(this.state.studentEntry).update({'courses': this.state.courses});
+        if(CheckIfUserIsStudent(this.state.student.email)) {
+            database.ref('/students').child(this.state.studentEntry).update({'courses': this.state.courses});
+        } else {
+            database.ref('/professors').child(this.state.studentEntry).update({'courses': this.state.courses});
+        }
+        
         withRouter(AdminDashboard);
         const {history} = this.props;
         history.push("/admin");
@@ -37,6 +43,7 @@ class UpdateUser extends Component {
         let subjectsNameList = [];
         const subjectsRefs = database.ref('materii');
         const studentRefs = database.ref('students');
+        const teachersRefs = database.ref('professors');
 
         subjectsRefs.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
@@ -46,17 +53,29 @@ class UpdateUser extends Component {
 
             this.setState({ subjectsList : subjectsNameList});
         });
-
-        studentRefs.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const childData = childSnapshot.val();
-                    
-                if(childData.email === this.state.student.email) {
-                    const key = childSnapshot.key
-                    this.setState({studentEntry: key})
-                }
+        if(CheckIfUserIsStudent(this.state.student.email)) {
+            studentRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                        
+                    if(childData.email === this.state.student.email) {
+                        const key = childSnapshot.key
+                        this.setState({studentEntry: key})
+                    }
+                });
             });
-        })
+        } else {
+            teachersRefs.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                        
+                    if(childData.email === this.state.student.email) {
+                        const key = childSnapshot.key
+                        this.setState({studentEntry: key})
+                    }
+                });
+            });
+        }
 
         const options = [];
         this.state.subjectsList.map((key, value) => options.push({
